@@ -1,27 +1,99 @@
 import React, { useState } from 'react';
 import './ComposeModal.css';
 
-function ComposeModal({ onSend, onClose }) {
+function ComposeModal({ isOpen, onClose, onSend }) {
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [content, setContent] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [aiTitle, setAiTitle] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSend({ to, subject, message });
+    try {
+      await onSend({ to, subject, content });
+      handleClose();
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      alert('Failed to send email. Please try again.');
+    }
   };
 
+  const handleClose = () => {
+    setTo('');
+    setSubject('');
+    setContent('');
+    setAiTitle('');
+    onClose();
+  };
+
+  const generateEmailWithAI = async () => {
+    if (!aiTitle.trim()) {
+      alert('Please enter a title for AI generation');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:3002/api/generate-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: aiTitle }),
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
+        // Set the subject to AI-generated title
+        setSubject(data.title || ''); // Use AI-generated title for email subject
+        setContent(data.content || '');
+      } else {
+        throw new Error(data.error || 'Failed to generate email');
+      }
+    } catch (error) {
+      console.error('AI Generation Error:', error);
+      alert('Failed to generate email. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
   return (
-    <div className="compose-overlay" onClick={(e) => {
-      if (e.target === e.currentTarget) onClose();
-    }}>
-      <div className="compose-modal">
+    <div className="compose-modal-overlay" onClick={handleClose}>
+      <div className="compose-modal" onClick={e => e.stopPropagation()}>
         <div className="compose-header">
           <h2>New Message</h2>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="close-btn" onClick={handleClose}>&times;</button>
         </div>
+
+        {/* AI Generation Section */}
+        <div className="ai-generation-section">
+          <div className="ai-input-group">
+            <label>Generate with AI</label>
+            <div className="ai-input-wrapper">
+              <input
+                type="text"
+                placeholder="Enter email topic..."
+                value={aiTitle}
+                onChange={(e) => setAiTitle(e.target.value)}
+                className="ai-title-input"
+              />
+              <button 
+                onClick={generateEmailWithAI}
+                disabled={isLoading}
+                className="ai-generate-btn"
+              >
+                {isLoading ? '⌛ Generating...' : '🤖 Generate'}
+              </button>
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="compose-form">
-          <div className="compose-body">
+          <div className="compose-fields">
             <input
               type="email"
               placeholder="To"
@@ -29,7 +101,6 @@ function ComposeModal({ onSend, onClose }) {
               onChange={(e) => setTo(e.target.value)}
               required
               className="compose-input"
-              autoFocus
             />
             <input
               type="text"
@@ -39,18 +110,27 @@ function ComposeModal({ onSend, onClose }) {
               className="compose-input"
             />
             <textarea
-              placeholder="Compose email"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Email content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
               className="compose-textarea"
             />
           </div>
           <div className="compose-actions">
-            <button type="submit" className="send-btn">
-              Send
-            </button>
-            <button type="button" className="cancel-btn" onClick={onClose}>
+            <button 
+              type="button" 
+              onClick={handleClose} 
+              className="cancel-btn"
+            >
               Discard
+            </button>
+            <button 
+              type="submit" 
+              className="send-btn"
+              disabled={!to || !content}
+            >
+              Send
             </button>
           </div>
         </form>

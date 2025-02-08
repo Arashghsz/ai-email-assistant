@@ -23,15 +23,19 @@ app.post('/api/generate-email', async (req, res) => {
 
         const prompt = `Generate a professional email for the following title: "${title}"
             Requirements:
-            1. Use professional business language
-            2. Keep it concise and clear
-            3. Include:
-               - Professional greeting
-               - Main content
-               - Professional closing
-               - Signature
-            4. Format it ready to paste into an email client
-            5. Don't include email headers (To:, From:, etc.)`;
+            1. The subject line must be:
+               - Only contain the actual title (e.g., "Hello")
+               - No analysis or thinking text
+               - No special formatting or characters
+               - No bullet points or dashes
+            2. The email body should:
+               - Use professional business language
+               - Include a greeting
+               - State the main message clearly
+               - Have a professional closing and signature
+            3. Format the response exactly as:
+               SUBJECT: Hello
+               BODY: [email content]`;
 
         console.log('Sending request to Groq API...');
         const completion = await groq.chat.completions.create({
@@ -40,12 +44,23 @@ app.post('/api/generate-email', async (req, res) => {
             ...config.apiOptions
         });
 
-        const generatedEmail = completion.choices[0]?.message?.content.trim() || '';
-        console.log('Email generated successfully');
+        const response = completion.choices[0]?.message?.content.trim() || '';
         
+        // Parse and clean the response
+        const parts = response.split('BODY:');
+        const rawTitle = parts[0].replace('SUBJECT:', '').trim();
+        
+        // Extract only the last part after any thinking text
+        const titleParts = rawTitle.split(/think|[-]/);
+        const extractedTitle = titleParts[titleParts.length - 1]
+            .trim()
+            .replace(/[^a-zA-Z0-9\s]/g, ''); // Remove any special characters
+
+        const extractedBody = parts[1]?.trim() || '';
+
         res.json({ 
-            title: title,
-            content: generatedEmail,
+            title: extractedTitle,
+            content: extractedBody,
             status: 'success'
         });
     } catch (error) {
