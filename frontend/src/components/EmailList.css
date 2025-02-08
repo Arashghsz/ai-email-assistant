@@ -1,0 +1,19 @@
+.email-analysis {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding-right: 16px;
+}
+
+.email-item {
+  display: grid;
+  grid-template-columns: 40px 200px 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid #f1f3f4;
+  cursor: pointer;
+}
+
+/* ...existing styles... */

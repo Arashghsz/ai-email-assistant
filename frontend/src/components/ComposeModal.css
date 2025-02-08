@@ -1,0 +1,151 @@
+.compose-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.compose-modal {
+  width: 650px;
+  height: 600px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  margin: auto;
+}
+
+.compose-header {
+  padding: 12px 16px;
+  background: #f2f6fc;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #dadce0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.compose-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.compose-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.compose-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compose-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid #dadce0;
+  font-size: 15px;
+  outline: none;
+  transition: border-bottom-color 0.2s;
+}
+
+.compose-input:focus {
+  border-bottom: 2px solid #1a73e8;
+  margin-bottom: -1px;
+}
+
+.compose-textarea {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  min-height: 350px;
+}
+
+.compose-actions {
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #dadce0;
+  display: flex;
+  gap: 8px;
+}
+
+.send-btn {
+  padding: 0 24px;
+  height: 36px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.send-btn:hover {
+  background: #1557b0;
+}
+
+.cancel-btn {
+  padding: 0 24px;
+  height: 36px;
+  background: transparent;
+  color: #5f6368;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #f1f3f4;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #5f6368;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: #f1f3f4;
+}
+
+/* Add responsive styles */
+@media (max-height: 700px) {
+  .compose-modal {
+    height: 80vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .compose-modal {
+    width: 90vw;
+  }
+}

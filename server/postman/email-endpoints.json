@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Email API Endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/health"
+      }
+    },
+    {
+      "name": "List Emails",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/email/list"
+      }
+    },
+    {
+      "name": "Get Email by ID",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/email/{{emailId}}"
+      }
+    },
+    {
+      "name": "Search Emails",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/email/search/{{searchQuery}}"
+      }
+    },
+    {
+      "name": "Send Email",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/email/send",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"to\": \"recipient@example.com\",\n    \"subject\": \"Test Email\",\n    \"message\": \"This is a test message\"\n}"
+        }
+      }
+    }
+  ]
+}
