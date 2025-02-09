@@ -1,0 +1,31 @@
+# Sample Prompts for Generating New Fake Emails
+
+1. Title: Meeting Request
+   Description: Generate an email requesting a meeting with a potential client to discuss a new project.
+
+2. Title: Job Application
+   Description: Generate an email applying for a software engineering position at a tech company.
+
+3. Title: Project Update
+   Description: Generate an email providing an update on the current status of a project to the project manager.
+
+4. Title: Event Invitation
+   Description: Generate an email inviting colleagues to a company event or team-building activity.
+
+5. Title: Feedback Request
+   Description: Generate an email requesting feedback from a client on a recently completed project.
+
+6. Title: Partnership Proposal
+   Description: Generate an email proposing a partnership with another company to explore new business opportunities.
+
+7. Title: Product Launch Announcement
+   Description: Generate an email announcing the launch of a new product to existing customers and prospects.
+
+8. Title: Customer Support Inquiry
+   Description: Generate an email inquiring about a technical issue with a product and requesting support.
+
+9. Title: Sales Follow-Up
+   Description: Generate an email following up with a potential customer after a sales call or meeting.
+
+10. Title: Thank You Note
+    Description: Generate an email thanking a colleague or client for their support and collaboration on a project.
