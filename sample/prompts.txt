@@ -4,7 +4,7 @@
    Description: Generate an email requesting a meeting with a potential client to discuss a new project.
 
 2. Title: Job Application
-   Description: Generate an email applying for a software engineering position at a tech company.
+   Description: write an email applying for a software engineering position at a tech company.
 
 3. Title: Project Update
    Description: Generate an email providing an update on the current status of a project to the project manager.
