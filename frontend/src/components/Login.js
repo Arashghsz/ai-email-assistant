@@ -29,8 +29,7 @@ function Login() {
       <div className="login-card">
         <h1>AI Email Assistant</h1>
         <p className="app-description">
-          AI Email Assistant helps you manage your emails efficiently with the power of AI. 
-          Automatically categorize, prioritize, and respond to emails with ease.
+        🚀 An AI-powered email assistant that integrates with Gmail to provide real-time email tracking, smart AI-generated responses using deepseek R1 model, and draft suggestions.
         </p>
         {error && (
           <div className="error-message">

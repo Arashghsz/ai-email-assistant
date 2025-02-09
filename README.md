@@ -1,6 +1,6 @@
 # AI Email Assistant
 
-🚀 An AI-powered email assistant that integrates with Gmail to provide real-time email tracking, smart AI-generated responses, and draft suggestions.
+🚀 An AI-powered email assistant that integrates with Gmail to provide real-time email tracking, smart AI-generated responses using deepseek R1 model, and draft suggestions.
 
 ## Features
 
@@ -30,6 +30,7 @@
   - Email generation with Groq
   - Smart reply suggestions
   - Context-aware responses
+  - Powered by DeepSeek R1 for advanced AI capabilities
 
 - **Architecture**:
   - Microservices architecture for scalability
@@ -95,6 +96,14 @@ npm start
 cd frontend
 npm start
 ```
+
+### Logging in with Google
+
+1. Open the application in your browser.
+2. Click on the "Login with Google" button.
+3. You will be redirected to the Google login page.
+4. Enter your Google credentials and grant the necessary permissions.
+5. After successful login, you will be redirected back to the application with access to your Gmail account.
 
 ## API Endpoints
 
@@ -170,7 +179,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Groq API for AI capabilities
 - Gmail API for email integration
 - React community for awesome tools and libraries
-
+- DeepSeek for advanced AI capabilities
+## Output
+![Sample Image](sample/Screenshot%202025-02-09%20143632.png)
+![Sample Image](sample/Screenshot%202025-02-09%20143721.png)
+![Sample Image](sample/Screenshot%202025-02-09%20143747.png)
+![Sample Image](sample/Screenshot%202025-02-09%20143826.png)
+![Sample Image](sample/Screenshot%202025-02-09%20143915.png)
 ## Contact
 
 Arash Ghasemzadeh Kakroudi - [www.arashghsz.com](https://arashghsz.com)
