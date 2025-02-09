@@ -10,8 +10,34 @@ function ComposeModal({ isOpen, onClose, onSend }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const trimmedTo = to.trim();
+    const trimmedSubject = subject.trim();
+    const trimmedContent = content.trim();
+
+    console.log('Pre-submission email data:', {
+      to: trimmedTo,
+      subject: trimmedSubject,
+      content: trimmedContent,
+      message: trimmedContent // Add message field for compatibility
+    });
+
+    if (!trimmedTo || !trimmedContent) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
     try {
-      await onSend({ to, subject, content });
+      const emailData = {
+        to: trimmedTo,
+        subject: trimmedSubject || 'No Subject',
+        content: trimmedContent,
+        message: trimmedContent, // Add message field for compatibility
+        contentType: 'text/plain'
+      };
+
+      await onSend(emailData);
+      console.log('Email data sent successfully:', emailData);
       handleClose();
     } catch (error) {
       console.error('Failed to send email:', error);
@@ -44,12 +70,14 @@ function ComposeModal({ isOpen, onClose, onSend }) {
       });
 
       const data = await response.json();
-      if (data.status === 'success') {
-        // Set the subject to AI-generated title
-        setSubject(data.title || ''); // Use AI-generated title for email subject
-        setContent(data.content || '');
+      console.log('AI Generated Content:', data); // Debug log
+      
+      if (data.status === 'success' && data.content) {
+        setSubject(data.title || aiTitle);
+        setContent(data.content);
+        console.log('Set content to:', data.content); // Debug log
       } else {
-        throw new Error(data.error || 'Failed to generate email');
+        throw new Error('Invalid AI response');
       }
     } catch (error) {
       console.error('AI Generation Error:', error);
@@ -128,7 +156,7 @@ function ComposeModal({ isOpen, onClose, onSend }) {
             <button 
               type="submit" 
               className="send-btn"
-              disabled={!to || !content}
+              disabled={!to || !content || !subject} // Updated condition
             >
               Send
             </button>

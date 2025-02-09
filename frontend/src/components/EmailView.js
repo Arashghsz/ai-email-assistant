@@ -12,6 +12,7 @@ function EmailView({ email, onClose, onReply }) {
     content: '',
     attachments: []
   });
+  const [isGeneratingReply, setIsGeneratingReply] = useState(false);
 
   useEffect(() => {
     if (email?.payload) {
@@ -83,6 +84,41 @@ function EmailView({ email, onClose, onReply }) {
     setShowReply(false);
   };
 
+  const generateReply = async () => {
+    try {
+      setIsGeneratingReply(true);
+      const response = await fetch('http://localhost:3002/api/generate-reply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          originalEmail: parsedEmail.content || email.snippet,
+          context: parsedEmail.from.split('<')[0].trim() // Extract sender's name
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.status === 'success' && data.content) {
+        // Validate response before setting
+        const content = data.content.trim();
+        if (content.length < 50 || !content.includes('regards')) {
+          throw new Error('Generated reply is incomplete');
+        }
+        setReplyMessage(content);
+        setShowReply(true);
+      } else {
+        throw new Error(data.error || 'Failed to generate reply');
+      }
+    } catch (error) {
+      console.error('Reply Generation Error:', error);
+      alert('Failed to generate reply. Please try again.');
+    } finally {
+      setIsGeneratingReply(false);
+    }
+  };
+
   const renderThreadMessages = () => {
     if (!email.threadMessages || email.threadMessages.length <= 1) return null;
 
@@ -138,19 +174,29 @@ function EmailView({ email, onClose, onReply }) {
 
         {renderThreadMessages()}
 
-        {!showReply ? (
-          <div className="email-view-actions">
-            <button 
-              className="action-btn primary-btn"
-              onClick={() => setShowReply(true)}
-            >
-              Reply
-            </button>
-            <button className="action-btn secondary-btn" onClick={onClose}>
-              Close
-            </button>
-          </div>
-        ) : (
+        <div className="email-view-actions">
+          <button 
+            className="action-btn primary-btn"
+            onClick={() => setShowReply(true)}
+          >
+            Reply
+          </button>
+          <button 
+            className="action-btn ai-btn"
+            onClick={generateReply}
+            disabled={isGeneratingReply}
+          >
+            {isGeneratingReply ? '⌛ Generating...' : '🤖 Generate AI Reply'}
+          </button>
+          <button 
+            className="action-btn secondary-btn" 
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+
+        {showReply && (
           <form onSubmit={handleReply} className="reply-form">
             <textarea
               value={replyMessage}
@@ -160,9 +206,13 @@ function EmailView({ email, onClose, onReply }) {
               autoFocus
             />
             <div className="reply-actions">
-              <button type="button" 
+              <button 
+                type="button" 
                 className="reply-btn cancel"
-                onClick={() => setShowReply(false)}
+                onClick={() => {
+                  setShowReply(false);
+                  setReplyMessage('');
+                }}
               >
                 Discard
               </button>

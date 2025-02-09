@@ -43,13 +43,25 @@ export const EmailService = {
 
   async sendEmail(data, token) {
     try {
+      console.log('EmailService sending data:', data); // Debug log
+
+      const emailData = {
+        to: data.to,
+        subject: data.subject || 'No Subject',
+        message: data.content || data.message, // Handle both content and message fields
+        content: data.content || data.message, // Handle both content and message fields
+        contentType: data.contentType || 'text/plain'
+      };
+
+      console.log('Formatted email data:', emailData); // Debug log
+
       const response = await fetch(`${API_URL}/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(emailData)
       });
       
       return handleResponse(response);
