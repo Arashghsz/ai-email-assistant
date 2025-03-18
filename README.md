@@ -48,7 +48,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ai-email-assistant.git
+git clone https://github.com/arashghsz/ai-email-assistant.git
 cd ai-email-assistant
 ```
 
